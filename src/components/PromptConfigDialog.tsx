@@ -70,7 +70,7 @@ export const PromptConfigDialog: React.FC<{ open: boolean; onOpenChange: (x: boo
                                 style={inputStyle}
                                 value={globalText}
                                 onChange={e => setGlobalText(e.target.value)}
-                                placeholder="Analyse the differences between the two code samples only."
+                                placeholder="Analyse the differences between the two code samples only. Make use of code blocks (```)"
                             />
                         </div>
                         <div>

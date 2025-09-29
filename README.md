@@ -68,7 +68,7 @@ src/
 
 Open the Prompt dialog in the top right. Edit:
 
-* **Global prompt**. Default: "Analyse the differences between the two code samples only."
+* **Global prompt**. Default: "Analyse the differences between the two code samples only. Make use of code blocks (```)"
 * **Language prompt**. Default: "Give one suggestion for improvement for <language>."
 
 Each field has a character limit. Over the limit the Save button is disabled and animates to show why. Limits are defined in `src/lib/config.ts`.

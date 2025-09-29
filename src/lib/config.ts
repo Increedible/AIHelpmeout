@@ -17,7 +17,7 @@ export const CONFIG = {
     PROVIDER_PREFERENCE: ['openai', 'gemini', 'anthropic'] as const,
 
     // Prompt configuration
-    GLOBAL_PROMPT_DEFAULT: 'Analyse the differences between the two code samples only.',
+    GLOBAL_PROMPT_DEFAULT: 'Analyse the differences between the two code samples only. Make use of code blocks (```)',
     LANG_PROMPT_DEFAULT_PREFIX: 'Give one suggestion for improvement for ', // + language label
     GLOBAL_PROMPT_MAX: 1000,
     LANG_PROMPT_MAX: 1000,
@@ -34,5 +34,12 @@ export const CONFIG = {
             'You have unsaved changes. Save before switching language?',
         noChangesSinceLastPrompt:
             'No changes to code or prompt text since the last prompt.'
-    }
+    },
+    
+    // Models
+    MODELS: {
+        openai:   { light: 'gpt-4o-mini',      heavy: 'gpt-4o' },
+        gemini:   { light: 'gemini-2.5-flash', heavy: 'gemini-2.5-pro' },
+        anthropic:{ light: 'claude-3.5-haiku', heavy: 'claude-3.5-sonnet' },
+    } as const,
 };

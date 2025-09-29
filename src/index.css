@@ -81,17 +81,23 @@ body { background: var(--brand-bg); color: var(--brand-text); }
 .overlay-saved {
     position: absolute;
     inset: 0;
-    background: rgba(127, 140, 141, 0.28); /* neutral grey wash */
+    background: rgba(127, 140, 141, 0.06); /* very light grey wash */
     display: flex;
     flex-direction: column;
     pointer-events: auto; /* capture clicks so editor beneath doesn't get focus */
 }
+
 .overlay-saved-header {
     @apply px-3 py-2 border-b;
     background: color-mix(in srgb, var(--brand-panel) 85%, transparent);
     border-color: var(--brand-border);
     font-weight: 600;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;         /* moved to bottom */
 }
+
 .overlay-saved-body {
     flex: 1;
     overflow: auto;

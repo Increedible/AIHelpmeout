@@ -26,7 +26,14 @@ export const TokensDialog: React.FC<{ open: boolean; onOpenChange: (x: boolean) 
   );
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(x) => {
+        // if closing without hitting Save, reset local edits
+        if (!x) setLocal(tokens);
+        onOpenChange(x);
+      }}
+    >
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
         <Dialog.Content

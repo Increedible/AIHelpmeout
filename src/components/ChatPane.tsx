@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
+import { User2, Cpu, TriangleAlert } from 'lucide-react';
 import { TokensDialog } from './TokensDialog';
 import { PromptConfigDialog } from './PromptConfigDialog';
 import { Markdown } from '@/lib/markdown';
@@ -9,13 +10,6 @@ import { languageLabelFromId } from '@/lib/languages';
 import { uid, buildPromptMarkdown, isSameText, promptSignature } from '@/lib/utils';
 import { callProvider } from '@/lib/providers';
 import type { Provider } from '@/types';
-
-const MODELS = {
-  openai: { heavy: 'gpt-4o', light: 'gpt-4o-mini' },
-  // Update Gemini to 2.5 models
-  gemini: { heavy: 'gemini-2.5-pro', light: 'gemini-2.5-flash' },
-  anthropic: { heavy: 'claude-3.5-sonnet', light: 'claude-3.5-haiku' }
-} as const;
 
 function providerOf(modelId: string): Provider {
   if (modelId.startsWith('openai.')) return 'openai';
@@ -92,7 +86,7 @@ export const ChatPane: React.FC = () => {
       s.appendChat({
         id: uid(),
         role: 'error',
-        content: CONFIG.STRINGS.noToken,
+        content: `No API key set for ${currentProvider.toUpperCase()}. Open “Tokens” to add one.`,
         ts: Date.now()
       });
     }
@@ -126,7 +120,7 @@ export const ChatPane: React.FC = () => {
       s.appendChat({
         id: uid(),
         role: 'error',
-        content: CONFIG.STRINGS.noToken,
+        content: `No API key set for ${currentProvider.toUpperCase()}. Open “Tokens” to add one.`,
         ts: Date.now()
       });
       s.setPrompting(false);
@@ -135,6 +129,16 @@ export const ChatPane: React.FC = () => {
 
     const ac = new AbortController();
     setAborter(ac);
+
+    // create a loading bubble immediately (three dots animation)
+    const aiId = uid();
+    let loadingDots = 0;
+    const loadingTimer = window.setInterval(() => {
+      loadingDots = (loadingDots + 1) % 4;
+      const dots = '.'.repeat(loadingDots || 3); // cycle 1..3
+      s.updateChatMessage(lang, aiId, prev => ({ ...prev, content: dots || '...' }));
+    }, 420);
+    s.appendChat({ id: aiId, role: 'ai', content: '...', ts: Date.now() });
 
     let fullText = '';
     try {
@@ -155,18 +159,16 @@ export const ChatPane: React.FC = () => {
       });
       s.setPrompting(false);
       setAborter(null);
+      window.clearInterval(loadingTimer);
       return;
     }
 
-    // Gradual reveal into a single AI bubble
-    const aiId = uid();
-    s.appendChat({ id: aiId, role: 'ai', content: '', ts: Date.now() });
-
     const total = fullText.length;
     let i = 0;
-    const stepChars = Math.max(1, Math.round(CONFIG.STREAM_CHAR_RATE / 10));
+    const stepChars = Math.max(1, Math.round(CONFIG.STREAM_CHAR_RATE / 3));
     const start = Date.now();
 
+    window.clearInterval(loadingTimer);
     clearTicker();
     tickerRef.current = window.setInterval(() => {
       if (cancelledRef.current || (aborter && aborter.signal.aborted)) {
@@ -220,7 +222,7 @@ export const ChatPane: React.FC = () => {
         style={{ borderColor: 'var(--brand-border)' }}
       >
         <button className="btn" onClick={() => setOpenPromptConfig(true)}>
-          Prompt
+          Edit Prompt
         </button>
 
         <Dropdown.Root>
@@ -244,19 +246,15 @@ export const ChatPane: React.FC = () => {
                   </Dropdown.Label>
                   <Dropdown.Item
                     className="px-3 py-2 rounded hover:bg-white/10 cursor-pointer"
-                    onClick={() =>
-                      s.setModel(`${p}.${(MODELS as any)[p].light}`)
-                    }
+                    onClick={() => s.setModel(`${p}.${(CONFIG.MODELS as any)[p].light}`)}
                   >
-                    {(MODELS as any)[p].light} (light)
+                    {(CONFIG.MODELS as any)[p].light} (light)
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="px-3 py-2 rounded hover:bg-white/10 cursor-pointer"
-                    onClick={() =>
-                      s.setModel(`${p}.${(MODELS as any)[p].heavy}`)
-                    }
+                    onClick={() => s.setModel(`${p}.${(CONFIG.MODELS as any)[p].heavy}`)}
                   >
-                    {(MODELS as any)[p].heavy} (heavy)
+                    {(CONFIG.MODELS as any)[p].heavy} (heavy)
                   </Dropdown.Item>
                   <Dropdown.Separator className="my-1 h-px bg-brand-border" />
                 </React.Fragment>
@@ -270,25 +268,45 @@ export const ChatPane: React.FC = () => {
         </button>
       </div>
 
-      {/* chat list */}
       <div ref={listRef} className="flex-1 overflow-auto p-4 space-y-3">
-        {(s.chat[lang] ?? []).map(m => (
-          <div
-            key={m.id}
-            className={`bubble ${
-              m.role === 'user'
-                ? 'bubble-user'
-                : m.role === 'error'
-                ? 'bubble-error'
-                : 'bubble-ai'
-            }`}
-          >
+      {/* Empty state: show a “how to” message when there are no messages and a token exists */}
+      {((s.chat[lang] ?? []).length === 0) && !!(s.tokens as any)[currentProvider] && (
+        <div className="flex items-start gap-3">
+          <div className="w-6 h-6 mt-1 opacity-80"><TriangleAlert size={20} /></div>
+          <div className="bubble bubble-ai">
             <div className="markdown">
-              <Markdown>{m.content}</Markdown>
+              <Markdown>
+                {`No analysis yet.\n\nPlease edit your code in the left editor and click **Save & Prompt** below to generate a formal review of the changes.`}
+              </Markdown>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {(s.chat[lang] ?? []).map(m => {
+        const isUser = m.role === 'user';
+        const isError = m.role === 'error';
+        const Icon = isError ? TriangleAlert : (isUser ? User2 : Cpu);
+
+        return (
+          <div key={m.id} className="flex items-start gap-3">
+            <div className="w-6 h-6 mt-1 opacity-80">
+              <Icon size={20} />
+            </div>
+            <div
+              className={`bubble ${
+                isUser ? 'bubble-user' : isError ? 'bubble-error' : 'bubble-ai'
+              }`}
+            >
+              <div className="markdown">
+                <Markdown>{m.content}</Markdown>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
 
       {/* footer actions */}
       <div className="p-3 border-t" style={{ borderColor: 'var(--brand-border)' }}>

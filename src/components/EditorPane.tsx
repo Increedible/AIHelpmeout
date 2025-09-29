@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Editor, { OnMount } from '@monaco-editor/react';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
 import { useStore } from '@/lib/state';
@@ -40,6 +40,21 @@ export const EditorPane: React.FC = () => {
     const [editor, setEditor] = React.useState<import('monaco-editor').editor.IStandaloneCodeEditor | null>(null);
     const [showSaved, setShowSaved] = React.useState(false);
 
+    // Remember the user's unsaved buffer when entering "View saved", restore on exit
+    const savedPreviewPrev = useRef<string | null>(null);
+
+    useEffect(() => {
+        if (showSaved) {
+            // entering preview: capture current unsaved text
+            savedPreviewPrev.current = codeState.currentCode;
+        } else if (savedPreviewPrev.current !== null) {
+            // exiting preview: restore previous unsaved text
+            st.updateCurrent(savedPreviewPrev.current);
+            savedPreviewPrev.current = null;
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showSaved]);
+
     const onMount: OnMount = (ed, monaco) => {
         setEditor(ed);
         ed.updateOptions({
@@ -64,9 +79,13 @@ export const EditorPane: React.FC = () => {
         setPendingLanguage(undefined);
     };
     const confirmSwitchDiscard = () => {
+        // Revert current unsaved edits back to the last saved snapshot before switching
+        const codeState = st.code[language]!;
+        st.updateCurrent(codeState.savedCode);
         if (pendingLanguage) setLanguage(pendingLanguage);
         setPendingLanguage(undefined);
     };
+
 
     const handleRevert = () => {
         st.revertToDefault();
@@ -140,15 +159,19 @@ export const EditorPane: React.FC = () => {
             </div>
 
             {/* editor */}
-            <div className="monaco-wrapper relative">
+            <div className={`monaco-wrapper relative h-full ${showSaved ? 'pb-10' : ''}`}>
                 <Editor
                     height="100%"
                     language={language}
                     path={`file_${language}.${extFor(language)}`}   /* distinct model per language => distinct undo/redo stacks */
-                    value={codeState.currentCode}
+                    value={showSaved ? codeState.savedCode : (savedPreviewPrev.current ?? codeState.currentCode)}
                     theme={theme === 'dark' ? 'vs-dark' : 'light'}
                     onMount={onMount}
-                    onChange={(v) => st.updateCurrent(v ?? '')}
+                    // Ignore Monaco "flush" changes (value set programmatically), only persist user edits
+                    onChange={(v, ev) => {
+                    if (ev?.isFlush) return;           // <-- prevents the accidental overwrite
+                    if (!showSaved) st.updateCurrent(v ?? '');
+                    }}
                     options={{
                         automaticLayout: true,
                         fontSize: 14,
@@ -156,17 +179,16 @@ export const EditorPane: React.FC = () => {
                         minimap: { enabled: false },
                         tabSize: 4,
                         insertSpaces: true,
+                        readOnly: showSaved,
                     }}
                 />
 
                 {showSaved && (
                     <div className="overlay-saved">
                         <div className="overlay-saved-header">
-                            Viewing last saved — read-only
+                        Viewing last saved — read-only
                         </div>
-                        <div className="overlay-saved-body">
-                            <pre>{codeState.savedCode}</pre>
-                        </div>
+                        <div className="overlay-saved-body" />
                     </div>
                 )}
             </div>
