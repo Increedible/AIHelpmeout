@@ -25,7 +25,7 @@ export const CONFIG = {
     // UI strings
     STRINGS: {
         noToken:
-            'No API key set for the selected model. Click “Tokens” and paste a key for this provider to proceed.',
+            'No API key set for the selected model. Click "Tokens" and paste a key for this provider to proceed.',
         promptCancelled: 'Prompt cancelled by user.',
         prompting: 'Prompt in progress…',
         unchangedFromDefault: 'Code matches the default template for this language.',

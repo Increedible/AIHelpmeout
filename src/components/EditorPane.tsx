@@ -8,6 +8,7 @@ import { IconButton } from './IconButton';
 import { ConfirmDialog } from './ConfirmDialog';
 import { Undo2, Redo2, RotateCcw, Save, Eye } from 'lucide-react';
 import { isSameText } from '@/lib/utils';
+import { Sun, Moon } from 'lucide-react';
 
 function extFor(lang: string) {
     switch (lang) {
@@ -93,9 +94,9 @@ export const EditorPane: React.FC = () => {
             <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: 'var(--brand-border)' }}>
                 <div className="flex items-center gap-2">
                     {/* Dark / Light */}
-                    <button className="btn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-                        {theme === 'dark' ? 'Light mode' : 'Dark mode'}
-                    </button>
+                    <IconButton title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+                        {theme === 'light' ? <Sun size={18} /> : <Moon size={18} />}
+                    </IconButton>
 
                     {/* Language dropdown */}
                     <Dropdown.Root>
@@ -175,7 +176,7 @@ export const EditorPane: React.FC = () => {
                 open={showRevert}
                 onOpenChange={setShowRevert}
                 title="Revert to default?"
-                description="This replaces your current editor contents with the language’s default code. It will not change your last saved version."
+                description="This replaces your current editor contents with the language's default code. It will not change your last saved version."
                 confirmLabel="Revert"
                 onConfirm={handleRevert}
             />

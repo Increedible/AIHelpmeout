@@ -180,7 +180,7 @@ export const ChatPane: React.FC = () => {
     return (
         <div className="h-full flex flex-col">
             <div className="flex items-center justify-end gap-2 px-3 py-2 border-b" style={{ borderColor: 'var(--brand-border)' }}>
-                <button className="btn" onClick={() => setOpenPromptConfig(true)}>Prompt</button>
+                <button className="btn" onClick={() => setOpenPromptConfig(true)}>Edit Prompt</button>
 
                 <Dropdown.Root>
                     <Dropdown.Trigger asChild>

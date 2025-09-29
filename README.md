@@ -12,6 +12,10 @@ Summary: You get to edit code on the left and compare it to the last saved code 
 
 More technically phrased it is a client‑only React app, built with Vite and TypeScript. It uses Monaco for the editor, Radix for the dialogs and tooltips, Zustand for state, and a small set of UI utilities. You can point it at OpenAI, Gemini, or Claude with your own API keys. 
 
+## How it works
+
+Change your code in the code editor on the left, and then you can click 'Save & Prompt' on near the bottom middle. This will save your current code and compare it to the **last saved code snippet**. You can view what code that is with the 'View Saved' button. You can change the prompts with the 'Edit Prompt' button on the top right.
+
 ### Features/highlights
 
 * VS Code‑style editor with syntax highlighting and per‑language undo or redo
@@ -50,7 +54,7 @@ src/
 
 ---
 
-## How it works
+## In practice
 
 * Editor on the left uses Monaco and keeps three versions per language: default, last saved, and current. Undo or redo is scoped per language by giving each language its own Monaco `path`.
 * Save writes current to saved. View Saved overlays the last saved code as read‑only, so you can compare by eye.
@@ -62,8 +66,8 @@ src/
 
 Open the Prompt dialog in the top right. Edit:
 
-* **Global prompt**. Default: “Analyse the differences between the two code samples only.”
-* **Language prompt**. Default: “Give one suggestion for improvement for <language>.”
+* **Global prompt**. Default: "Analyse the differences between the two code samples only."
+* **Language prompt**. Default: "Give one suggestion for improvement for <language>."
 
 Each field has a character limit. Over the limit the Save button is disabled and animates to show why. Limits are defined in `src/lib/config.ts`.
 
