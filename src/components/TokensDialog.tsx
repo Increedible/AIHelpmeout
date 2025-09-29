@@ -11,7 +11,7 @@ export const TokensDialog: React.FC<{ open: boolean; onOpenChange: (x: boolean) 
 
   React.useEffect(() => setLocal(tokens), [tokens]);
 
-  const Input: React.FC<{label: string; name: 'openai'|'gemini'|'anthropic'}> = ({ label, name }) => (
+  const Input: React.FC<{ label: string; name: 'openai' | 'gemini' | 'anthropic' }> = ({ label, name }) => (
     <div className="flex items-center gap-2">
       <label className="w-28 text-brand-muted">{label}</label>
       <input
@@ -29,20 +29,24 @@ export const TokensDialog: React.FC<{ open: boolean; onOpenChange: (x: boolean) 
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] max-w-[96vw] rounded-xl2 border p-6 shadow-soft"
-          style={{ background: 'var(--brand-panel)', borderColor: 'var(--brand-border)', color: 'var(--brand-text)' }}>
+        <Dialog.Content
+          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] max-w-[96vw] rounded-xl2 border p-6 shadow-soft"
+          style={{ background: 'var(--brand-panel)', borderColor: 'var(--brand-border)', color: 'var(--brand-text)' }}
+        >
           <Dialog.Title className="text-lg font-semibold">Tokens</Dialog.Title>
           <Dialog.Description className="mt-1 text-brand-muted">
-            Your keys are stored in <b>localStorage</b> only, and sent directly to providers from your browser. (This is prototype-grade and intentionally client-only.)
+            Your keys are stored <b>locally only</b>, and sent directly to providers from your browser.
           </Dialog.Description>
+
           <div className="mt-5 space-y-3">
             <Input label="OpenAI" name="openai" />
             <Input label="Gemini" name="gemini" />
             <Input label="Claude" name="anthropic" />
           </div>
+
           <div className="mt-4 flex items-center justify-between">
             <button className="btn btn-ghost" onClick={() => setShow(s => !s)}>
-              {show ? <EyeOff size={18}/> : <Eye size={18}/>}
+              {show ? <EyeOff size={18} /> : <Eye size={18} />}
               {show ? 'Hide' : 'Show'} keys
             </button>
             <div className="flex gap-2">

@@ -4,22 +4,24 @@
 
 /* Light/Dark theme variables — one place to tune the look */
 :root {
-  --brand-bg: #0f1115;
-  --brand-panel: #151922;
-  --brand-border: #2a2f3a;
-  --brand-text: #e7e9ee;
-  --brand-muted: #9aa3b2;
-  --brand-primary: #ffffff; /* buttons/icons idle */
-  --brand-error: #ff6b6b;
+    --brand-bg: #0f1115;
+    --brand-panel: #151922;
+    --brand-border: #2a2f3a;
+    --brand-text: #e7e9ee;
+    --brand-muted: #9aa3b2;
+    --brand-primary: #ffffff;       /* primary button bg (dark mode) */
+    --brand-primary-fg: #000000;    /* primary button text (dark mode) */
+    --brand-error: #ff6b6b;
 }
 :root.light {
-  --brand-bg: #f7f7f9;
-  --brand-panel: #ffffff;
-  --brand-border: #e5e7eb;
-  --brand-text: #0f172a;
-  --brand-muted: #6b7280;
-  --brand-primary: #111827;
-  --brand-error: #d92d20;
+    --brand-bg: #f7f7f9;
+    --brand-panel: #ffffff;
+    --brand-border: #e5e7eb;
+    --brand-text: #0f172a;
+    --brand-muted: #6b7280;
+    --brand-primary: #111827;       /* primary button bg (light mode) */
+    --brand-primary-fg: #ffffff;    /* primary button text (light mode) */
+    --brand-error: #d92d20;
 }
 
 /* App chrome */
@@ -28,13 +30,13 @@ body { background: var(--brand-bg); color: var(--brand-text); }
 
 /* Vector-y buttons */
 .btn {
-  @apply inline-flex items-center gap-2 rounded-xl2 px-3 py-2 shadow-soft border transition;
-  background: var(--brand-panel);
-  border-color: var(--brand-border);
-  color: var(--brand-text);
+    @apply inline-flex items-center gap-2 rounded-xl2 px-3 py-2 shadow-soft border transition;
+    background: var(--brand-panel);
+    border-color: var(--brand-border);
+    color: var(--brand-text);
 }
 .btn-ghost { background: transparent; border-color: transparent; }
-.btn-primary { background: var(--brand-primary); color: #000; }
+.btn-primary { background: var(--brand-primary); color: var(--brand-primary-fg); }
 .btn-danger  { background: var(--brand-error); color: #fff; }
 .btn-muted   { color: var(--brand-muted); }
 
@@ -42,15 +44,15 @@ body { background: var(--brand-bg); color: var(--brand-text); }
 
 /* Panels / Splitter */
 .panel {
-  @apply h-full rounded-xl2 border;
-  background: var(--brand-panel);
-  border-color: var(--brand-border);
+    @apply h-full rounded-xl2 border;
+    background: var(--brand-panel);
+    border-color: var(--brand-border);
 }
 
 /* Chat bubbles */
 .bubble {
-  @apply max-w-[80%] rounded-xl2 px-4 py-3 border shadow-soft;
-  border-color: var(--brand-border);
+    @apply max-w-[80%] rounded-xl2 px-4 py-3 border shadow-soft;
+    border-color: var(--brand-border);
 }
 .bubble-user { background: #2a3442; }
 .light .bubble-user { background: #e9eef9; }
@@ -63,10 +65,10 @@ body { background: var(--brand-bg); color: var(--brand-text); }
 
 /* Tooltips - Radix renders portalled content */
 .radix-tooltip {
-  @apply rounded-md text-sm px-2 py-1 border;
-  background: var(--brand-panel);
-  color: var(--brand-text);
-  border-color: var(--brand-border);
+    @apply rounded-md text-sm px-2 py-1 border;
+    background: var(--brand-panel);
+    color: var(--brand-text);
+    border-color: var(--brand-border);
 }
 
 /* Markdown content inside AI bubble */
@@ -74,3 +76,39 @@ body { background: var(--brand-bg); color: var(--brand-text); }
 .markdown pre { overflow: auto; padding: .75rem; border-radius: .75rem; border: 1px solid var(--brand-border); }
 .markdown code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .markdown h1, .markdown h2, .markdown h3 { font-weight: 700; margin: .5rem 0 .25rem; }
+
+/* Saved-code overlay over Monaco */
+.overlay-saved {
+    position: absolute;
+    inset: 0;
+    background: rgba(127, 140, 141, 0.28); /* neutral grey wash */
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto; /* capture clicks so editor beneath doesn't get focus */
+}
+.overlay-saved-header {
+    @apply px-3 py-2 border-b;
+    background: color-mix(in srgb, var(--brand-panel) 85%, transparent);
+    border-color: var(--brand-border);
+    font-weight: 600;
+}
+.overlay-saved-body {
+    flex: 1;
+    overflow: auto;
+    padding: .75rem;
+}
+.overlay-saved pre {
+    white-space: pre; 
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+}
+
+/* Tiny "shake" for invalid action feedback */
+@keyframes shake-x {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+.btn-shake {
+    animation: shake-x .18s linear 2;
+}

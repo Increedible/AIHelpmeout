@@ -38,3 +38,5 @@ Thumbs.db
 
 # Misc
 *.local
+package-lock.json
+push.bat
