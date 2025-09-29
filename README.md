@@ -8,7 +8,9 @@ Live demo: [https://papzak.loetcodes.nl/AIHelpmeout/](https://papzak.loetcodes.n
 
 ## What this is
 
-A client‑only React app, built with Vite and TypeScript. It uses Monaco for the editor, Radix for the dialogs and tooltips, Zustand for state, and a small set of UI utilities. You can point it at OpenAI, Gemini, or Claude with your own API keys. 
+Summary: You get to edit code on the left and compare it to the last saved code with a LLM, you get to configure the prompts.
+
+More technically phrased it is a client‑only React app, built with Vite and TypeScript. It uses Monaco for the editor, Radix for the dialogs and tooltips, Zustand for state, and a small set of UI utilities. You can point it at OpenAI, Gemini, or Claude with your own API keys. 
 
 ### Features/highlights
 
