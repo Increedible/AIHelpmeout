@@ -87,7 +87,7 @@ Requirements: Node 18 or newer.
 
 ```bash
 # clone
-git clone https://github.com/<you>/AIHelpmeout.git
+git clone https://github.com/Increedible/AIHelpmeout.git
 cd AIHelpmeout
 
 # install and run
