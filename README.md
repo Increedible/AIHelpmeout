@@ -16,6 +16,8 @@ More technically phrased it is a client‑only React app, built with Vite and Ty
 
 Change your code in the code editor on the left, and then you can click 'Save & Prompt' on near the bottom middle. This will save your current code and compare it to the **last saved code snippet**. You can view what code that is with the 'View Saved' button. You can change the prompts with the 'Edit Prompt' button on the top right.
 
+**Note**: Only OpenAI and Gemini model API integration have been tested.
+
 ### Features/highlights
 
 * VS Code‑style editor with syntax highlighting and per‑language undo or redo
@@ -74,7 +76,7 @@ Each field has a character limit. Over the limit the Save button is disabled and
 ### Supported models
 
 * **OpenAI**: `gpt-4o`, `gpt-4o-mini`
-* **Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`
+* **Gemini**: `gemini-2.5-pro`, `gemini-2.5-flash`
 * **Claude**: `claude-3.5-sonnet`, `claude-3.5-haiku`
 
 You can pick a model from the menu. If there is no key for the selected provider the chat shows a friendly error bubble and scrolls to it.

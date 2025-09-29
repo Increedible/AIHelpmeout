@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // central palette — tweak once, changes everywhere
+        // central palette; tweak once, changes everywhere
         brand: {
           bg: 'var(--brand-bg)',
           panel: 'var(--brand-panel)',

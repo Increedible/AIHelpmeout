@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light/Dark theme variables — one place to tune the look */
+/* Light/Dark theme variables; one place to tune the look */
 :root {
     --brand-bg: #0f1115;
     --brand-panel: #151922;
