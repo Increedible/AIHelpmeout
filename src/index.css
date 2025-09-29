@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light/Dark theme variables — one place to tune the look */
+:root {
+  --brand-bg: #0f1115;
+  --brand-panel: #151922;
+  --brand-border: #2a2f3a;
+  --brand-text: #e7e9ee;
+  --brand-muted: #9aa3b2;
+  --brand-primary: #ffffff; /* buttons/icons idle */
+  --brand-error: #ff6b6b;
+}
+:root.light {
+  --brand-bg: #f7f7f9;
+  --brand-panel: #ffffff;
+  --brand-border: #e5e7eb;
+  --brand-text: #0f172a;
+  --brand-muted: #6b7280;
+  --brand-primary: #111827;
+  --brand-error: #d92d20;
+}
+
+/* App chrome */
+html, body, #root { height: 100%; }
+body { background: var(--brand-bg); color: var(--brand-text); }
+
+/* Vector-y buttons */
+.btn {
+  @apply inline-flex items-center gap-2 rounded-xl2 px-3 py-2 shadow-soft border transition;
+  background: var(--brand-panel);
+  border-color: var(--brand-border);
+  color: var(--brand-text);
+}
+.btn-ghost { background: transparent; border-color: transparent; }
+.btn-primary { background: var(--brand-primary); color: #000; }
+.btn-danger  { background: var(--brand-error); color: #fff; }
+.btn-muted   { color: var(--brand-muted); }
+
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Panels / Splitter */
+.panel {
+  @apply h-full rounded-xl2 border;
+  background: var(--brand-panel);
+  border-color: var(--brand-border);
+}
+
+/* Chat bubbles */
+.bubble {
+  @apply max-w-[80%] rounded-xl2 px-4 py-3 border shadow-soft;
+  border-color: var(--brand-border);
+}
+.bubble-user { background: #2a3442; }
+.light .bubble-user { background: #e9eef9; }
+.bubble-ai   { background: #1b2130; }
+.light .bubble-ai { background: #f0f3f9; }
+.bubble-error { background: color-mix(in srgb, var(--brand-error) 22%, transparent); border-color: var(--brand-error); }
+
+/* Monaco height fix */
+.monaco-wrapper { height: calc(100% - 56px); } /* leave room for top bar */
+
+/* Tooltips - Radix renders portalled content */
+.radix-tooltip {
+  @apply rounded-md text-sm px-2 py-1 border;
+  background: var(--brand-panel);
+  color: var(--brand-text);
+  border-color: var(--brand-border);
+}
+
+/* Markdown content inside AI bubble */
+.markdown p { margin: .25rem 0 .5rem; }
+.markdown pre { overflow: auto; padding: .75rem; border-radius: .75rem; border: 1px solid var(--brand-border); }
+.markdown code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.markdown h1, .markdown h2, .markdown h3 { font-weight: 700; margin: .5rem 0 .25rem; }
