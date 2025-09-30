@@ -4,8 +4,6 @@ Ever wanted to know what where you went wrong with that last commit to main, but
 
 Live demo: [https://papzak.loetcodes.nl/AIHelpmeout/](https://papzak.loetcodes.nl/AIHelpmeout/) (keys are stored locally only, but always be cautious with your keys!)
 
----
-
 ![Screenshot of Demo](attachments/Preview.png "Demo Preview")
 
 ---
