@@ -1,5 +1,4 @@
-// Non-trivial default code per language (roughly "half screen" worth).
-// Consistent 4-space indentation. Keep samples practical so the diff has signal.
+// Non-trivial default code per language (roughly half screen worth).
 export const DEFAULT_SNIPPETS: Record<string, string> = {
     javascript: `// Quick LRU cache with stats
 class LRU {
