@@ -4,7 +4,7 @@ Ever wanted to know what where you went wrong with that last commit to main, but
 
 Live demo: [https://papzak.loetcodes.nl/AIHelpmeout/](https://papzak.loetcodes.nl/AIHelpmeout/) (keys are stored locally only, but always be cautious with your keys!)
 
-Since the top domain will be expiring soon, here is the backup link: [AI, help me out!](https://papzak.loetcodes.nl/AIHelpmeout/)
+Since the top domain will be expiring soon, here is the backup link: [AI, help me out!](http://158.180.13.250/AIHelpmeout/)
 
 ![Screenshot of Demo](attachments/Preview.png "Demo Preview")
 
