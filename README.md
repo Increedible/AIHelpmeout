@@ -3,6 +3,7 @@
 Ever wanted to know what where you went wrong with that last commit to main, but hate pasting all your code in LLM's each time ánd are you allergic to CLI? Well, no more!
 
 Live demo: [https://papzak.loetcodes.nl/AIHelpmeout/](https://papzak.loetcodes.nl/AIHelpmeout/) (keys are stored locally only, but always be cautious with your keys!)
+Sicne the top domain will be expiring soon, here is the backup link: [AI, help me out!](https://papzak.loetcodes.nl/AIHelpmeout/)
 
 ![Screenshot of Demo](attachments/Preview.png "Demo Preview")
 
